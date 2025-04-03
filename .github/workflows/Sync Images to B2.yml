@@ -1,0 +1,25 @@
+name: Sync Images to B2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'KonwNotes/**'  # 监控图片目录的变化
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Sync to Backblaze B2
+        uses: jakejarvis/s3-sync-action@v2
+        with:
+          args: --acl public-read  # 设为公开访问
+        env:
+          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
+          AWS_S3_ENDPOINT: ${{ secrets.B2_ENDPOINT }}
+          SOURCE_DIR: 'KonwNotes/'  # 本地图片目录
