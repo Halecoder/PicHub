@@ -2,7 +2,7 @@ name: Sync Images to B2
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'KonwNotes/**'  # 监控图片目录的变化
 
